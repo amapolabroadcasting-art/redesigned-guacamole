@@ -32,6 +32,6 @@ jobs:
           password: ${{ secrets.MAIL_PASSWORD }}
 
           from: partnerwithus@educentra.ai
-          to: ${{ github.event.inputs.to }}
-          subject: ${{ github.event.inputs.subject }}
-          body: ${{ github.event.inputs.body }
+          to: "edwardlorilla1986@gmail.com"
+          subject: "edwardlorilla1986@gmail.com"
+          body: "edwardlorilla1986@gmail.com"
