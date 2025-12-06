@@ -1,35 +1,25 @@
-using System;
-using MailKit.Net.Smtp;
-using MailKit.Security;
-using MimeKit;
+const nodemailer = require('nodemailer');
 
-class Program
-{
-    static void Main()
-    {
-        var message = new MimeMessage();
-        message.From.Add(new MailboxAddress("Educentra", "partnerwithus@educentra.ai"));
-        message.To.Add(new MailboxAddress("Recipient Name", "someone@example.com"));
-        message.Subject = "Test email from Educentra";
+async function sendEmail() {
+  const transporter = nodemailer.createTransport({
+    host: 'mail.educentra.ai',
+    port: 587,
+    secure: false,
+    auth: {
+      user: 'partnerwithus@educentra.ai',
+      pass: process.env.SMTP_PASSWORD,
+    },
+  });
 
-        message.Body = new TextPart("plain")
-        {
-            Text = "Hello! This is a test email sent programmatically."
-        };
+  const info = await transporter.sendMail({
+    from: '"Educentra" <partnerwithus@educentra.ai>',
+    to: 'someone@example.com',
+    subject: 'Test email from code',
+    text: 'Hello! This is a test email sent programmatically.',
+    html: '<p>Hello! This is a <b>test email</b> sent programmatically.</p>',
+  });
 
-        using (var client = new SmtpClient())
-        {
-            // connect
-            client.Connect("mail.educentra.ai", 587, SecureSocketOptions.StartTls);
-
-            // authenticate
-            client.Authenticate("partnerwithus@educentra.ai", Environment.GetEnvironmentVariable("SMTP_PASSWORD"));
-
-            // send
-            client.Send(message);
-            client.Disconnect(true);
-        }
-
-        Console.WriteLine("Email sent.");
-    }
+  console.log('Message sent:', info.messageId);
 }
+
+sendEmail().catch(console.error);
