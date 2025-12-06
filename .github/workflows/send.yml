@@ -1,24 +1,37 @@
-name: Send Email via Educentra Mail
+name: Send email via educentra.ai
 
 on:
-  workflow_dispatch:  # manually trigger
+  workflow_dispatch:
+    inputs:
+      to:
+        description: "Recipient email address"
+        required: true
+      subject:
+        description: "Email subject"
+        required: true
+      body:
+        description: "Email body (plain text)"
+        required: true
 
 jobs:
-  send_email:
+  send-mail:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Send email using educentra.ai SMTP
+      - name: Send email via educentra.ai SMTP
         uses: dawidd6/action-send-mail@v3
         with:
-          server_address: educentra.ai
-          server_port: 465
-          secure: true                         # Use SSL/TLS
-          username: ${{ secrets.MAIL_USERNAME }}
+          # Try the canonical mail host if available
+          server_address: mail.educentra.ai
+          server_port: 587
+
+          # For port 587, let STARTTLS negotiate:
+          secure: false
+
+          username: ${{ secrets.MAIL_USERNAME }}   # partnerwithus@educentra.ai
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "GitHub Action Email Test"
-          to: "edwardlorilla1986@gmail.com"
-          from: "partnerwithus@educentra.ai"
-          body: |
-            This is a test email sent from GitHub Actions
-            using the secure SMTP settings of educentra.ai.
+
+          from: partnerwithus@educentra.ai
+          to: ${{ github.event.inputs.to }}
+          subject: ${{ github.event.inputs.subject }}
+          body: ${{ github.event.inputs.body }
