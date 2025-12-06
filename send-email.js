@@ -2,14 +2,14 @@ const nodemailer = require('nodemailer');
 
 async function sendEmail() {
   const transporter = nodemailer.createTransport({
-    host: 'mail.educentra.ai',
-    port: 587,
-    secure: false,
-    auth: {
-      user: 'partnerwithus@educentra.ai',
-      pass: process.env.SMTP_PASSWORD,
-    },
-  });
+  host: 'webmail.educentra.ai',   // ⬅️ change this
+  port: 587,
+  secure: false,
+  auth: {
+    user: 'partnerwithus@educentra.ai',
+    pass: process.env.SMTP_PASSWORD,
+  },
+});
 
   const info = await transporter.sendMail({
     from: '"Educentra" <partnerwithus@educentra.ai>',
