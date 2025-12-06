@@ -22,7 +22,7 @@ jobs:
         uses: dawidd6/action-send-mail@v3
         with:
           # Try the canonical mail host if available
-          server_address: mail.educentra.ai
+          server_address: educentra.ai
           server_port: 587
 
           # For port 587, let STARTTLS negotiate:
